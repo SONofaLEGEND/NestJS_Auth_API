@@ -1,4 +1,4 @@
-import {Body,Controller,Post} from '@nestjs/common';
+import {Body,Controller,Post,Put,Delete, Param} from '@nestjs/common';
 import {AuthService} from './auth.service';
 import {LoginDTO,RegisterDTO} from './auth.dto';
 import {UserService} from 'src/shared/user.service';
@@ -39,6 +39,33 @@ export class AuthController {
         }
 
     }
+
+    @Put('update/:id')
+    async update(
+        @Param('id') id:string, 
+        @Body() userDTO:RegisterDTO){
+            const user = await this.userService.update(id, userDTO);
+            const payload = {
+                username: user.username,
+              };
+            
+              const token = await this.authService.signPayload(payload);
+            
+              return {
+                user,
+                token,
+              };
+        }
+
+    @Delete(':id')
+    async deleteUser(@Param('id') id:string) {
+        await this.userService.delete(id);
+
+        return {
+            message: 'User deleted successfully'
+        }
+    }
+    
 
     
 }

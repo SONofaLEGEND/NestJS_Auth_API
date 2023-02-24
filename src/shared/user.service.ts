@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/types/user.types';
@@ -52,5 +52,34 @@ export class UserService{
         const { username } = payload;
         const user = await this.userModel.findOne({username});
         return user;
+    }
+
+    async update(id:string, userDTO:RegisterDTO):Promise<User>{
+        const user = await this.userModel.findById(id);
+
+        if(!user) {
+            throw new NotFoundException('User not found');
+        }
+        
+        const hashedPassword = await bcrypt.hash(userDTO.password, 10);
+        const updatedUser = await this.userModel.findByIdAndUpdate(id,
+            {
+                ...userDTO,
+                password: hashedPassword,
+            }, { new:true });
+
+            if(!updatedUser) {
+                throw new NotFoundException('User not found');
+            }
+
+            return updatedUser;
+    }
+
+    async delete(id:string):Promise<void>{
+        const result = await this.userModel.findByIdAndDelete(id).exec();
+
+        if(!result) {
+            throw new NotFoundException('User not found');
+        }
     }
 }
