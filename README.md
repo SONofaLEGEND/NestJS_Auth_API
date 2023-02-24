@@ -4,16 +4,16 @@
 User data authentication API for Login, Sign-up and other CRUD operations. Written in NestJS (Typescript), with strategy from Passport, Token service from JWT, password encryption from Bcrypt and storage MongoDB.
 
 
-### V1.0
+### V1.0 - Initial commit
 
 - User Register and Login functionality added.
 - Function for issuing JWT on login/register
 - User validation
 - Password Encryption
 
-### Future Updates
+### V1.1 - Second commit
 
-- Other CRUD functionalities such as editing user information, deleting user data etc.
+- Added user updation and deletion with the use of id
 
 
 ### DEMO
