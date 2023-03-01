@@ -1,7 +1,8 @@
-import {Body,Controller,Post,Put,Delete, Param} from '@nestjs/common';
+import {Body,Controller,Post,Put,Delete, Param, UseGuards, Get, Request} from '@nestjs/common';
 import {AuthService} from './auth.service';
 import {LoginDTO,RegisterDTO} from './auth.dto';
 import {UserService} from 'src/shared/user.service';
+import { AuthMiddleware } from './auth.middleware';
 
 
 @Controller('auth')
@@ -29,13 +30,9 @@ export class AuthController {
 
         const user = await this.userService.create(userDTO);
 
-        const payload = {
-            username: user.username,
-        }
-
-        const token = await this.authService.signPayload(payload);
+        
         return {
-            user, token
+            user
         }
 
     }
@@ -65,7 +62,11 @@ export class AuthController {
             message: 'User deleted successfully'
         }
     }
+    @Get('profile')
+    async profile(@Request() req) {
+    return req.user;
     
+  }
 
     
 }

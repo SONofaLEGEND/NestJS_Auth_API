@@ -28,9 +28,15 @@ export const userSchema = new mongoose.Schema({
         type:Date,
         default:Date.now
     },
+
+    dob: {
+        type:Date
+    },
+
     bio: {
         type:String
     },
+    
     profileImg:
     {
         type:String

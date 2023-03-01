@@ -53,6 +53,11 @@ export class UserService{
         const user = await this.userModel.findOne({username});
         return user;
     }
+    async findById(payload:any){
+        const { id } = payload;
+        const user = await this.userModel.findById({id});
+        return user;
+    }
 
     async update(id:string, userDTO:RegisterDTO):Promise<User>{
         const user = await this.userModel.findById(id);
