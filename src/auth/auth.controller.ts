@@ -29,10 +29,14 @@ export class AuthController {
     async register(@Body() userDTO:RegisterDTO){
 
         const user = await this.userService.create(userDTO);
+        const payload = {
+            username: user.username,
+        }
 
+        const token = await this.authService.signPayload(payload);
         
         return {
-            user
+            user,token
         }
 
     }
@@ -64,7 +68,9 @@ export class AuthController {
     }
     @Get('profile')
     async profile(@Request() req) {
-    return req.user;
+    const resp = this.userService.findByUsername(req.user.username);
+
+    return resp;
     
   }
 

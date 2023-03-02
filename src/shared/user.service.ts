@@ -47,7 +47,10 @@ export class UserService{
 
     }
 
-
+    async findByUsername(username:string):Promise<User>{
+        const user = await this.userModel.findOne({username});
+        return user;
+    }
     async findByPayload(payload:any){
         const { username } = payload;
         const user = await this.userModel.findOne({username});
